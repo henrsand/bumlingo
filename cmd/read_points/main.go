@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"henrik_gis/internal/config"
 	"henrik_gis/internal/db"
 	"os"
 	"os/signal"
@@ -18,6 +19,11 @@ func main() {
 
 func run() error {
 
+	err := config.LoadDotEnv()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading .env: %v\n", err)
+	}
+
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
@@ -27,12 +33,10 @@ func run() error {
 	}
 	defer pool.Close()
 
-	fmt.Println("Looking")
 	points, err := db.ReadPoints(ctx, pool)
 	if err != nil {
 		fmt.Printf("Error when reading rows: %s", err)
 	}
-	fmt.Println("Looked")
 	fmt.Println(len(points))
 
 	for i, p := range points {

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"henrik_gis/internal/config"
 	"henrik_gis/internal/db"
 	"os"
 	"os/signal"
@@ -24,6 +25,10 @@ func main() {
 }
 
 func run() error {
+	err := config.LoadDotEnv()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading .env: %v\n", err)
+	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()

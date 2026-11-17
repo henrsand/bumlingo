@@ -17,6 +17,7 @@ import (
 	"syscall"
 	"text/tabwriter"
 
+	"henrik_gis/internal/config"
 	"henrik_gis/internal/db"
 )
 
@@ -28,6 +29,11 @@ func main() {
 }
 
 func run() error {
+	err := config.LoadDotEnv()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading .env: %v\n", err)
+	}
+
 	jsonOut := flag.Bool("json", false, "print rows as JSON instead of a text table")
 	flag.Usage = func() {
 		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s [-json] <table> [schema]\n\n", os.Args[0])

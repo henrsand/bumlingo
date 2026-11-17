@@ -1,15 +1,21 @@
 # AGENTS.md
 
-Go module `henrik_gis` (Go 1.27.4, pgx/v5): CLI utilities over a PostGIS database. No API server yet.
+Go module `henrik_gis` (Go 1.27.4, pgx/v5 + godotenv): CLI utilities over a PostGIS database.
+No API server yet — the plan is a stdlib `net/http` server in `cmd/api` (first endpoint
+`GET /api/points`, bare JSON arrays; SQL stays in `internal/db`).
 
 ## Commands
 
 - Build one tool (binary lands in repo root): `go build -o <name> ./cmd/<name>`
 - Verify everything: `go build ./... && go vet ./... && go test ./...`
 - Single test: `go test ./internal/db -run TestReadTableSanitizesIdentifier -v`
-- Run a tool — `DATABASE_URL` must be exported first (nothing loads `.env`, it is only gitignored):
+- Run a tool — every command first calls `config.LoadDotEnv()`, which loads `.env` from the
+  working directory via godotenv: real environment variables win over `.env`, a missing
+  `.env` is fine, a malformed one only prints a warning to stderr. Run from the repo root,
+  or `.env` is silently skipped. `.env` is gitignored — create it from `.env-example` and
+  fill in real credentials:
   ```sh
-  export DATABASE_URL='postgres://user:pass@localhost:5432/gis?sslmode=disable'
+  cp .env-example .env   # contains DATABASE_URL and ADDR placeholders
   ./show_data pois gis        # table + optional schema
   ./show_data -json pois      # JSON output
   ```
@@ -17,6 +23,7 @@ Go module `henrik_gis` (Go 1.27.4, pgx/v5): CLI utilities over a PostGIS databas
 ## Layout
 
 - `cmd/<name>/main.go` — one CLI per directory: `show_data`, `show_tables`, `read_points`, `insert_point`
+- `internal/config/` — `LoadDotEnv` (.env loading; every cmd calls it before `db.Connect`)
 - `internal/db/` — shared helpers: `Connect`, `ReadTable`, `ReadTables`, `InsertPoint`, `ReadPoints`
 
 ## Gotchas

@@ -15,6 +15,7 @@ import (
 	"syscall"
 	"text/tabwriter"
 
+	"henrik_gis/internal/config"
 	"henrik_gis/internal/db"
 )
 
@@ -26,6 +27,11 @@ func main() {
 }
 
 func run() error {
+	err := config.LoadDotEnv()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading .env: %v\n", err)
+	}
+
 	flag.Usage = func() {
 		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s\n\n", os.Args[0])
 		fmt.Fprintln(flag.CommandLine.Output(), "Prints all table names in the database. The connection string is read from DATABASE_URL.")
