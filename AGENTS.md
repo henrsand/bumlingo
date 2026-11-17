@@ -19,12 +19,18 @@ No API server yet — the plan is a stdlib `net/http` server in `cmd/api` (first
   ./show_data pois gis        # table + optional schema
   ./show_data -json pois      # JSON output
   ```
+- Run the API: `go run ./cmd/api` (listens on `ADDR`, default `:8080`), then
+  `curl localhost:8080/healthz` and `curl localhost:8080/api/points`
 
 ## Layout
 
-- `cmd/<name>/main.go` — one CLI per directory: `show_data`, `show_tables`, `read_points`, `insert_point`
+- `cmd/<name>/main.go` — one command per directory: CLIs (`show_data`, `show_tables`,
+  `read_points`, `insert_point`) plus the HTTP server `api`
+- `internal/api/` — HTTP handlers (stdlib `net/http`, Go 1.22+ method patterns). Depends on
+  small consumer-side interfaces (e.g. `PointsReader`), so tests use fakes and need no database
 - `internal/config/` — `LoadDotEnv` (.env loading; every cmd calls it before `db.Connect`)
-- `internal/db/` — shared helpers: `Connect`, `ReadTable`, `ReadTables`, `InsertPoint`, `ReadPoints`
+- `internal/db/` — shared helpers and all SQL: `Connect`, `ReadTable`, `ReadTables`,
+  `InsertPoint`, `ReadPoints`
 
 ## Gotchas
 

@@ -9,8 +9,9 @@ import (
 )
 
 type Point struct {
-	Label    string
-	Lon, Lat float64
+	Label string  `json:"label"`
+	Lon   float64 `json:"lon"`
+	Lat   float64 `json:"lat"`
 }
 
 func InsertPoint(ctx context.Context, q Execer, p Point) (int64, error) {
