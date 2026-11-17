@@ -43,21 +43,4 @@ func run() error {
 	fmt.Println("All ok: %w", num)
 
 	return nil
-
-	// point := poi{label: "New point", lon: "18.0586", lat: "59.3300"}
-	// query := "INSERT INTO poi (label, geom) VALUES ('" + point.label + "', ST_SetSRID(ST_MakePoint(" + point.lon + ", " + point.lat + "), 4326));"
-
-	// fmt.Println("Query: " + query)
-
-	// rows, err := pool.Query(ctx, query)
-	// fmt.Println("inserted")
-	// if err != nil {
-	// 	return fmt.Errorf("err error: %w", err)
-	// }
-	// if rows == nil {
-	// 	return fmt.Errorf("rows error: no rows returned")
-	// }
-	// defer rows.Close()
-
-	return nil
 }
