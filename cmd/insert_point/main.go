@@ -1,10 +1,10 @@
 package main
 
 import (
+	"bumlingo/internal/config"
+	"bumlingo/internal/db"
 	"context"
 	"fmt"
-	"henrik_gis/internal/config"
-	"henrik_gis/internal/db"
 	"os"
 	"os/signal"
 	"syscall"

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"henrik_gis/internal/db"
+	"bumlingo/internal/db"
 )
 
 type fakePointsReader struct {
@@ -18,6 +18,10 @@ type fakePointsReader struct {
 }
 
 func (f fakePointsReader) ReadPoints(context.Context) ([]db.Point, error) {
+	return f.points, f.err
+}
+
+func (f fakePointsReader) ReadPointsInBBox(ctx context.Context, minLon, minLat, maxLon, maxLat float64) ([]db.Point, error) {
 	return f.points, f.err
 }
 

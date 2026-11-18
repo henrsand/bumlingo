@@ -45,6 +45,23 @@ func ReadPoints(ctx context.Context, q Querier) ([]Point, error) {
 	return points, nil
 }
 
+func ReadPointsInBBox(ctx context.Context, q Querier, minLon, minLat, maxLon, maxLat float64) ([]Point, error) {
+	query := `SELECT label, ST_X(geom) as lon, ST_Y(geom) as lat from poi WHERE geom && ST_MakeEnvelope($1, $2, $3, $4, 4326)`
+	rows, err := q.Query(ctx, query, minLon, minLat, maxLon, maxLat)
+
+	if err != nil {
+		return nil, fmt.Errorf("Something went wrong fetching points: %s", err)
+	}
+	defer rows.Close()
+
+	points, err := pgx.CollectRows(rows, pgx.RowToStructByName[Point])
+	if err != nil {
+		return nil, fmt.Errorf("Something went wrong mapping points: %s", err)
+	}
+
+	return points, nil
+}
+
 type Execer interface {
 	Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error)
 }

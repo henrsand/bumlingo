@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Go module `henrik_gis` (Go 1.27.4, pgx/v5 + godotenv): CLI utilities over a PostGIS database.
+Go module `bumlingo` (Go 1.27.4, pgx/v5 + godotenv): CLI utilities over a PostGIS database.
 No API server yet — the plan is a stdlib `net/http` server in `cmd/api` (first endpoint
 `GET /api/points`, bare JSON arrays; SQL stays in `internal/db`).
 

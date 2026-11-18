@@ -1,4 +1,4 @@
-# henrik_gis
+# bumlingo
 
 Go app exposing a PostGIS database through an API.
 

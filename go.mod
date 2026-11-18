@@ -1,4 +1,4 @@
-module henrik_gis
+module bumlingo
 
 go 1.27.4
 

@@ -16,9 +16,9 @@ import (
 	"syscall"
 	"time"
 
-	"henrik_gis/internal/api"
-	"henrik_gis/internal/config"
-	"henrik_gis/internal/db"
+	"bumlingo/internal/api"
+	"bumlingo/internal/config"
+	"bumlingo/internal/db"
 )
 
 // poolPoints adapts a db.Querier to api.PointsReader.
@@ -28,6 +28,10 @@ type poolPoints struct {
 
 func (p poolPoints) ReadPoints(ctx context.Context) ([]db.Point, error) {
 	return db.ReadPoints(ctx, p.q)
+}
+
+func (p poolPoints) ReadPointsInBBox(ctx context.Context, minLon, minLat, maxLon, maxLat float64) ([]db.Point, error) {
+	return db.ReadPointsInBBox(ctx, p.q, minLon, minLat, maxLon, maxLat)
 }
 
 func main() {

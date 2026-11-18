@@ -8,13 +8,14 @@ import (
 	"net/http"
 	"time"
 
-	"henrik_gis/internal/db"
+	"bumlingo/internal/db"
 )
 
 // PointsReader fetches all points. It is implemented by an adapter over the
 // database in cmd/api and faked in tests.
 type PointsReader interface {
 	ReadPoints(ctx context.Context) ([]db.Point, error)
+	ReadPointsInBBox(ctx context.Context, minLon, minLat, maxLon, maxLat float64) ([]db.Point, error)
 }
 
 // Server holds the dependencies of the HTTP handlers.
@@ -55,6 +56,11 @@ func writeJSON(w http.ResponseWriter, status int, v any) {
 func writeError(w http.ResponseWriter, status int, err error) {
 	log.Printf("%s: %v", http.StatusText(status), err)
 	writeJSON(w, status, map[string]string{"error": http.StatusText(status)})
+}
+
+func writeClientError(w http.ResponseWriter, status int, msg string) {
+	log.Printf("%s: %v", http.StatusText(status), msg)
+	writeJSON(w, status, map[string]string{"error": msg})
 }
 
 // responseWriter captures the status code for logging.
