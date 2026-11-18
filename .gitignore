@@ -1,4 +1,6 @@
 /show_data
 /show_data.exe
+/api
+/api.exe
 *.out
 .env

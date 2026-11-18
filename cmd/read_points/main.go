@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"henrik_gis/internal/config"
-	"henrik_gis/internal/db"
+	"bumlingo/internal/config"
+	"bumlingo/internal/db"
 	"os"
 	"os/signal"
 	"syscall"

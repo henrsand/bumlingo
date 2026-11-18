@@ -1,0 +1,23 @@
+[Unit]
+Description=Bumlingo API (GET /api/points)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=bumlingo
+Group=bumlingo
+WorkingDirectory=/opt/bumlingo
+EnvironmentFile=/etc/bumlingo/env
+ExecStart=/opt/bumlingo/api
+Restart=on-failure
+RestartSec=5
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
