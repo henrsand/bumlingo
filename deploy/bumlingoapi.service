@@ -1,5 +1,5 @@
 [Unit]
-Description=Bumlingo API (GET /api/points)
+Description=bumlingoapi - Bumlingo API (GET /api/points)
 After=network-online.target
 Wants=network-online.target
 
